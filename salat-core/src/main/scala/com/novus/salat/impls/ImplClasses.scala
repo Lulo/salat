@@ -24,10 +24,10 @@
  */
 package com.novus.salat
 
-import scala.collection.mutable.{ Map => MMap, Set => MSet, Seq => MSeq, IndexedSeq => MIndexedSeq }
+import scala.collection.mutable.{ Map => MMap, ListMap => MListMap, Set => MSet, Seq => MSeq, IndexedSeq => MIndexedSeq }
 import scala.collection.mutable.{ Buffer, ArrayBuffer, LinkedList, DoubleLinkedList }
 import scala.tools.scalap.scalax.rules.scalasig._
-import scala.collection.immutable.{ List => IList, Map => IMap, Set => ISet, Seq => ISeq, IndexedSeq => IIndexedSeq }
+import scala.collection.immutable.{ List => IList, Map => IMap, ListMap => IListMap, Set => ISet, Seq => ISeq, IndexedSeq => IIndexedSeq }
 
 package object impls {
   def traversableImpl(name: String, real: collection.Traversable[_]): scala.collection.Traversable[_] = name match {
@@ -70,10 +70,12 @@ package object impls {
     }
 
   def mapImpl(name: String, real: scala.collection.Map[_, _]): scala.collection.Map[_, _] = name match {
-    case ImplClasses.MapClass  => Map.empty ++ real
-    case ImplClasses.IMapClass => IMap.empty ++ real
-    case ImplClasses.MMapClass => MMap.empty ++ real
-    case x                     => throw new IllegalArgumentException("failed to find proper Map[_,_] impl for %s".format(x))
+    case ImplClasses.IListMapClass => IListMap.empty ++ real
+    case ImplClasses.MListMapClass => MListMap.empty ++ real
+    case ImplClasses.MapClass      => Map.empty ++ real
+    case ImplClasses.IMapClass     => IMap.empty ++ real
+    case ImplClasses.MMapClass     => MMap.empty ++ real
+    case x                         => throw new IllegalArgumentException("failed to find proper Map[_,_] impl for %s".format(x))
   }
 
   def mapImpl(t: Type, real: collection.Map[_, _]): scala.collection.Map[_, _] =
@@ -101,6 +103,9 @@ package impls {
     val MapClass = classOf[scala.collection.Map[_, _]].getName
     val IMapClass = classOf[IMap[_, _]].getName
     val MMapClass = classOf[MMap[_, _]].getName
+
+    val IListMapClass = classOf[IListMap[_, _]].getName
+    val MListMapClass = classOf[MListMap[_, _]].getName
 
     val SetClass = classOf[scala.collection.Set[_]].getName
     val ISetClass = classOf[ISet[_]].getName

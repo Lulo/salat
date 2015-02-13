@@ -37,13 +37,13 @@ protected[salat] object Types {
   val SBigDecimal = Set("scala.math.BigDecimal", "scala.package.BigDecimal")
   val BigInt = Set("scala.math.BigInt", "scala.package.BigInt")
   val Option = "scala.Option"
-  val Map = ".Map"
+  val Maps = Set(".Map", ".ListMap")
   val Traversables = Set(".Seq", ".List", ".Vector", ".Set", ".Buffer", ".ArrayBuffer", ".IndexedSeq", ".LinkedList", ".DoubleLinkedList")
   val BitSets = Set("scala.collection.BitSet", "scala.collection.immutable.BitSet", "scala.collection.mutable.BitSet")
 
   def isOption(sym: Symbol) = sym.path == Option
 
-  def isMap(symbol: Symbol) = symbol.path.endsWith(Map)
+  def isMap(symbol: Symbol) = Maps.exists(symbol.path.endsWith(_))
 
   def isTraversable(symbol: Symbol) = Traversables.exists(symbol.path.endsWith(_))
 
